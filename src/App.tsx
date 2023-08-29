@@ -1,8 +1,7 @@
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 import './App.css'
 
 //components
-import ChoosePole from "./views/ChoosePole.tsx";
 import Login from "./views/Login.tsx";
 
 function App() {
@@ -11,8 +10,10 @@ function App() {
     <>
       <Router>
           <Routes>
-              <Route path="/" element={<ChoosePole/>}/>
-              <Route path="/connexion" element={<Login/>}/>
+              <Route path={"/"}>
+                  <Route index element={<Navigate to={"/connexion"} replace/>}/>
+                  <Route path="/connexion" element={<Login/>}/>
+              </Route>
           </Routes>
       </Router>
     </>
