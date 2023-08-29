@@ -1,12 +1,27 @@
 import {useForm, FieldValues} from "react-hook-form";
+import {useNavigate} from "react-router-dom";
+//ui
 import InputCustom from "../ui/inputForm/InputCustom.tsx";
 import {Button} from "../../@/components/ui/button.tsx";
+//services
+import {userServices} from "../../services/userServices.ts";
 
 const LoginForm = () => {
+    const navigate = useNavigate()
     const {register, formState: {errors: {email, password}}, handleSubmit} = useForm()
 
     const onSubmit = (values : FieldValues) => {
-    console.log(values)
+        const email = values.email
+        const password = values.password
+        userServices.login({email: email, password: password})
+            .then((user) => {
+                if (user !== undefined) {
+                    localStorage.setItem("token", user.token)
+                    localStorage.setItem("user", user.user)
+                    navigate("/")
+                }
+
+            })
     }
 
     const handleErrors = (err : FieldValues) => {
