@@ -34,6 +34,19 @@ const UsersPage = () => {
         const response = await userServices.getUsers()
         setUsers(response)
     }
+
+    const getRole = (role : number) => {
+        switch (role) {
+            case 0 :
+                return "Administrateur"
+            case 1 :
+                return "Directeur"
+            case 2 :
+                return "Référent"
+            case 3 :
+                return "Employé"
+        }
+    }
     return (
         <div id={"container"}>
             <Header/>
@@ -60,6 +73,7 @@ const UsersPage = () => {
                             <TableHead>Prénom</TableHead>
                             <TableHead>Email</TableHead>
                             <TableHead>Pole</TableHead>
+                            <TableHead>Role</TableHead>
                             <TableHead>Nombres de tâches assignées</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -70,6 +84,7 @@ const UsersPage = () => {
                                 <TableCell className={"text-left"}>{user["firstname"]}</TableCell>
                                 <TableCell className={"text-left"}>{user["email"]}</TableCell>
                                 <TableCell className={"text-left"}>{user["pole"] === "all" ? "administrateur" : user["pole"]}</TableCell>
+                                <TableCell className={"text-left"}>{getRole(user["role"])}</TableCell>
                                 <TableCell className={"text-left"}>{user["tasks"].length}</TableCell>
                             </TableRow>
                         ))}
