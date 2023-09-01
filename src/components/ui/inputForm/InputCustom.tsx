@@ -17,6 +17,7 @@ type Props = {
     onChange?: (e : React.ChangeEvent<HTMLInputElement>) => void
     type?: string
     typeInput?: string
+    orientation?: string
 }
 const InputCustom = (props : Props) => {
    const getPattern = () => {
@@ -34,7 +35,7 @@ const InputCustom = (props : Props) => {
     }
 
     return (
-        <>
+        <div className={props.orientation === "horizontal" ? "flex" : "flex-col"}>
             <Label htmlFor={props.id} className={props.error ? "text-destructive" : ""}>{props.label}</Label>
             <Input
                 id={props.id}
@@ -48,7 +49,7 @@ const InputCustom = (props : Props) => {
             <span className={"text-destructive"}>
                 {props.error ? (props.error.type === "pattern" ? props.patternMessage  : "Champ obligatoire") : ""}
             </span>
-        </>
+        </div>
     )
 }
 

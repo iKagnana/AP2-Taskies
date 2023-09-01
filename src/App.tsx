@@ -5,6 +5,7 @@ import './App.css'
 import Login from "./views/Login.tsx";
 ////admin
 import HomePageAdmin from "./views/Admin/HomePageAdmin.tsx";
+import UsersPage from "./views/Admin/UsersPage.tsx";
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
               </Route>
               <Route path={"/admin"}>
                   <Route index element={<HomePageAdmin/>}/>
+                  <Route path={"/admin/utilisateurs"} element={<UsersPage/>}/>
               </Route>
           </Routes>
       </Router>

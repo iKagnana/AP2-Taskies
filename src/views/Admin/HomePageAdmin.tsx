@@ -1,4 +1,5 @@
 import {useContext} from "react";
+import {useNavigate} from "react-router-dom";
 import {AppContext} from "../../utils/context.tsx";
 import GestionCard from "../../components/ui/card/GestionCard.tsx";
 import Header from "../../components/header/Header.tsx";
@@ -14,6 +15,7 @@ import {
 
 const HomePageAdmin = () => {
     const {state} = useContext(AppContext)
+    const navigate = useNavigate()
     return (
         <div id={"container"} className={"flex flex-col items-center h-screen"}>
             <Header/>
@@ -25,14 +27,14 @@ const HomePageAdmin = () => {
                     <span className={"text-2xl"}>Gestion</span>
                     <div id={"card-container"} className={"flex justify-center items-center flex-wrap"}>
                         <div className={"flex justify-center"}>
-                            <GestionCard title={"Utilisateurs"} icon={User}/>
-                            <GestionCard title={"Pôles"} icon={Boxes}/>
-                            <GestionCard title={"Autorisations"} icon={KeyRound}/>
+                            <GestionCard onClick={() => navigate("/admin/utilisateurs")} title={"Utilisateurs"} icon={User}/>
+                            <GestionCard onClick={() => navigate("/admin/utilsateurs")} title={"Pôles"} icon={Boxes}/>
+                            <GestionCard onClick={() => navigate("/admin/utilsateurs")} title={"Autorisations"} icon={KeyRound}/>
                         </div>
                         <div className={"flex justify-center"}>
-                            <GestionCard title={"Mes notes personnelles"} icon={StickyNote}/>
-                            <GestionCard title={"Mon compte"} icon={UserSquare}/>
-                            <GestionCard title={"À propos de GSB"} icon={Beaker}/>
+                            <GestionCard onClick={() => navigate("/admin/utilsateurs")} title={"Mes notes personnelles"} icon={StickyNote}/>
+                            <GestionCard onClick={() => navigate("/admin/utilsateurs")} title={"Mon compte"} icon={UserSquare}/>
+                            <GestionCard onClick={() => navigate("/admin/utilsateurs")} title={"À propos de GSB"} icon={Beaker}/>
                         </div>
 
 
