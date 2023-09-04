@@ -10,6 +10,8 @@ import {SelectItem} from "../../@/components/ui/select.tsx";
 import {userServices} from "../../services/userServices.ts";
 //data
 import {poles} from "../../utils/data.ts";
+//icon
+import {KeyRound} from "lucide-react";
 
 type Props = {
     defaultValues? : Form
@@ -28,6 +30,8 @@ type Form = {
     role: number
 }
 const AddUserForm = (props: Props) => {
+    const alphabet = "abcdefghijklmnopqrstuvwxyz"
+    const charSpe = "@&!./"
     const { toast } = useToast()
     const [requiredFields] = useState(props.status === "update" ? false : true)
     const {register, formState: {errors: {lastname, firstname, email, password}}, handleSubmit, setValue, watch} = useForm()
@@ -42,6 +46,26 @@ const AddUserForm = (props: Props) => {
             setValue("pole", values?.pole)
         }
     }, [])
+
+    const generatePassword = () => {
+        let password = ""
+        while (password.length <= 12) {
+            const random = Math.floor(Math.random() * 3)
+            switch (random) {
+                case 0 :
+                    password = password + charSpe.charAt(Math.floor(Math.random() * charSpe.length))
+                    break
+                case 1 :
+                    password = password + alphabet.charAt(Math.floor(Math.random() * alphabet.length))
+                    break
+                case 2 :
+                    password = password + alphabet.charAt(Math.floor(Math.random() * alphabet.length)).toUpperCase()
+                    break
+            }
+        }
+        console.log(password)
+        setValue("password", password)
+    }
     const onSubmit = (values : FieldValues) => {
         if (props.status === "update" && props.idEmployee) {
             console.log("prout")
@@ -110,15 +134,24 @@ const AddUserForm = (props: Props) => {
                         label="Email *"
                     />
 
-                    <InputCustom
-                        id={"password"}
-                        name={"password"}
-                        type={"password"}
-                        register={register}
-                        error={password}
-                        required={requiredFields}
-                        label={"Mot de passe"}
-                    />
+                    <div className={"flex items-end gap-1 w-1/2 px-1"}>
+                        <div>
+                            <InputCustom
+                                id={"password"}
+                                name={"password"}
+                                type={"password"}
+                                register={register}
+                                error={password}
+                                required={requiredFields}
+                                label={"Mot de passe"}
+                            />
+                        </div>
+
+                        <Button type={"button"} onClick={() => generatePassword()}>
+                            <KeyRound/>
+                        </Button>
+                    </div>
+
                 </div>
 
                 <div className={"flex gap-4 w-full px-1.5"}>
