@@ -1,5 +1,7 @@
+import {useState, useEffect} from "react";
 import {useForm, FieldValues} from "react-hook-form";
 //ui
+import {useToast} from "../../@/components/ui/use-toast.ts";
 import InputCustom from "../ui/inputForm/InputCustom.tsx";
 import {Button} from "../../@/components/ui/button.tsx";
 import SelectCustom from "../ui/inputForm/SelectCustom.tsx";
@@ -8,20 +10,65 @@ import {SelectItem} from "../../@/components/ui/select.tsx";
 import {userServices} from "../../services/userServices.ts";
 //data
 import {poles} from "../../utils/data.ts";
-const LoginForm = () => {
-    const {register, formState: {errors: {lastname, firstname, email, password}}, handleSubmit, setValue} = useForm()
 
-    const onSubmit = (values : FieldValues) => {
-        const newUser = {
-            firstname : values.firstname,
-            lastname: values.lastname,
-            email: values.email,
-            password: values.password,
-            pole: values.pole,
-            role: parseInt(values.role)
+type Props = {
+    defaultValues? : Form
+    status? : string
+    idEmployee? : string
+    closeDialog : () => void
+    fetchData: () => void
+}
+
+type Form = {
+    lastname : string
+    firstname: string
+    email: string
+    password: string
+    pole: string
+    role: number
+}
+const AddUserForm = (props: Props) => {
+    const { toast } = useToast()
+    const [requiredFields] = useState(props.status === "update" ? false : true)
+    const {register, formState: {errors: {lastname, firstname, email, password}}, handleSubmit, setValue, watch} = useForm()
+
+    useEffect(() => {
+        if (props.defaultValues) {
+            const values = props.defaultValues
+            setValue("firstname", values?.firstname)
+            setValue("lastname", values?.lastname)
+            setValue("email", values?.email)
+            setValue("role", values?.role.toString())
+            setValue("pole", values?.pole)
         }
-        userServices.addUser(newUser)
-        console.log(newUser)
+    }, [])
+    const onSubmit = (values : FieldValues) => {
+        if (props.status === "update" && props.idEmployee) {
+            console.log("prout")
+            const updatedUser = {
+                firstname : values.firstname,
+                lastname: values.lastname,
+                email: values.email,
+                password: values.password,
+                pole: values.pole,
+                role: parseInt(values.role)
+            }
+            userServices.updateUserById(updatedUser, props.idEmployee)
+            toast({title : "Modification", description : "Modification des informations de l'utilisateur réussi."})
+        } else {
+            const newUser = {
+                firstname : values.firstname,
+                lastname: values.lastname,
+                email: values.email,
+                password: values.password,
+                pole: values.pole,
+                role: parseInt(values.role)
+            }
+            userServices.addUser(newUser)
+            toast({title: "Ajout", description: "Ajout de l'utilisateur réussi."})
+        }
+        props.closeDialog()
+        props.fetchData()
     }
 
     const handleErrors = (err : FieldValues) => {
@@ -36,9 +83,9 @@ const LoginForm = () => {
                         register={register}
                         name={"lastname"}
                         error={lastname}
-                        required={true}
+                        required={requiredFields}
                         label="Nom *"
-                        //onChange={(e) => setValue("email", e.target.value)}
+                        onChange={(e) => setValue("lastname", e.target.value.toUpperCase())}
                     />
 
                     <InputCustom
@@ -46,8 +93,9 @@ const LoginForm = () => {
                         name={"firstname"}
                         register={register}
                         error={firstname}
-                        required={true}
+                        required={requiredFields}
                         label={"Prénom *"}
+                        onChange={(e) => setValue("firstname", e.target.value.charAt(0).toUpperCase() + e.target.value.slice(1))}
                     />
                 </div>
                 <div className={"flex gap-4"}>
@@ -58,7 +106,7 @@ const LoginForm = () => {
                         error={email}
                         patternMessage={"Email incorrect"}
                         typeInput={"email"}
-                        required={true}
+                        required={requiredFields}
                         label="Email *"
                     />
 
@@ -68,14 +116,14 @@ const LoginForm = () => {
                         type={"password"}
                         register={register}
                         error={password}
-                        required={true}
+                        required={requiredFields}
                         label={"Mot de passe"}
                     />
                 </div>
 
-                <div className={"flex gap-4 w-full"}>
+                <div className={"flex gap-4 w-full px-1.5"}>
                     <SelectCustom
-                        required={true}
+                        required={requiredFields}
                         label={"Pole"}
                         id={"pole"}
                         register={register}
@@ -84,10 +132,11 @@ const LoginForm = () => {
                         render={poles.map((pole) => (
                             <SelectItem value={pole.name}>{pole.name}</SelectItem>
                         ))}
+                        value={watch("pole")}
                     />
 
                     <SelectCustom
-                        required={true}
+                        required={requiredFields}
                         label={"Role"}
                         id={"role"}
                         register={register}
@@ -99,8 +148,9 @@ const LoginForm = () => {
                             <SelectItem value={"2"}>Référent</SelectItem>
                             <SelectItem value={"3"}>L'employé</SelectItem>
                         </>
-
-                        ]}/>
+                        ]}
+                        value={watch("role")}
+                    />
                 </div>
 
 
@@ -110,4 +160,4 @@ const LoginForm = () => {
     )
 }
 
-export default LoginForm
+export default AddUserForm

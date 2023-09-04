@@ -5,5 +5,6 @@ export const poles: Pole[] = [
     {name: "Communication & rédaction", img: "https://cdn.pixabay.com/photo/2015/01/08/18/26/man-593333_1280.jpg"},
     {name: "Développement", img : "https://cdn.pixabay.com/photo/2015/12/04/14/05/code-1076536_1280.jpg"},
     {name: "Commercial", img: "https://cdn.pixabay.com/photo/2016/03/05/21/21/agree-1238964_1280.jpg"},
-    {name: "Labo-recherche", img: "https://cdn.pixabay.com/photo/2017/02/01/13/53/analysis-2030265_1280.jpg"}
+    {name: "Labo-recherche", img: "https://cdn.pixabay.com/photo/2017/02/01/13/53/analysis-2030265_1280.jpg"},
+    {name: "Administrateur", img: "https://cdn.pixabay.com/photo/2017/02/01/13/53/analysis-2030265_1280.jpg"}
 ]

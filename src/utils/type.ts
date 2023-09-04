@@ -14,6 +14,7 @@ type Task = {
 }
 
 type User = {
+    _id ?: string
     lastname: string;
     firstname: string;
     email: string;

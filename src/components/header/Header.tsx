@@ -26,7 +26,7 @@ const Header = () => {
     console.log(state)
     return (
         <div id={"container"} className={"w-full h-44 flex justify-around items-center text-lg bg-[#f1f5f9]"}>
-            <span>Header</span>
+            <span>GSB - Taskies</span>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant={"ghost"}>

@@ -12,6 +12,7 @@ type Props = {
     onChange?: (value: string) => void
     render: JSX.Element[]
     label: string
+    value?: string
 }
 
 const SelectCustom = (props: Props) => {
@@ -23,6 +24,7 @@ const SelectCustom = (props: Props) => {
                     required: props.required
                 })}
                 onValueChange={props.onChange}
+                value={props.value}
             >
                 <SelectTrigger>
                     <SelectValue placeholder={""}/>

@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import Header from "../../components/header/Header.tsx";
 import AddUserForm from "../../components/form/AddUserForm.tsx";
 //shadcn
+import {Toaster} from "../../@/components/ui/toaster.tsx";
 import {Button} from "../../@/components/ui/button.tsx";
 import {
     Table,
@@ -20,12 +21,18 @@ import {
     DialogHeader,
     DialogTitle,
 } from "../../@/components/ui/dialog.tsx";
+import {useToast} from "../../@/components/ui/use-toast.ts";
+//icon
+import {Trash2, Pen, RefreshCw} from "lucide-react";
 //services
 import {userServices} from "../../services/userServices.ts";
 //type
 import {User} from "../../utils/type.ts";
 const UsersPage = () => {
+    const [openAdd, setOpenAdd] = useState<boolean>(false)
+    const [openUpdate, setOpenUpdate] = useState<boolean>(false)
     const [users, setUsers] = useState<[User]>()
+    const { toast } = useToast()
 
     useEffect(() => {
         fetchData()
@@ -47,18 +54,30 @@ const UsersPage = () => {
                 return "Employé"
         }
     }
+
+    const deleteUser = (id?: string) => {
+        if (id) {
+            userServices.deleteUserById(id)
+            toast({
+                title: "Suppression",
+                description : "L'utilisateur a bien été supprimé."
+            })
+        }
+        fetchData()
+    }
     return (
         <div id={"container"}>
             <Header/>
-            <div id={"button-container"} className={"p-5 flex justify-end"}>
-                <Dialog>
+            <div id={"button-container"} className={"p-5 flex justify-end gap-2"}>
+                <Button onClick={()=> fetchData()}><RefreshCw color="#ffffff" /></Button>
+                <Dialog open={openAdd} onOpenChange={setOpenAdd}>
                     <DialogTrigger asChild>
-                        <Button >Création d'utilisateur</Button>
+                        <Button onClick={() => setOpenAdd(true)} >Création d'utilisateur</Button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
                             <DialogTitle>Création d'un nouvel utilisateur</DialogTitle>
-                            <AddUserForm/>
+                            <AddUserForm fetchData={fetchData} closeDialog={() => setOpenAdd(false)}/>
                         </DialogHeader>
                     </DialogContent>
                 </Dialog>
@@ -69,6 +88,7 @@ const UsersPage = () => {
                     <TableCaption>Listes de tous les utilisateurs de gsb</TableCaption>
                     <TableHeader>
                         <TableRow>
+                            <TableHead></TableHead>
                             <TableHead>Nom</TableHead>
                             <TableHead>Prénom</TableHead>
                             <TableHead>Email</TableHead>
@@ -78,8 +98,29 @@ const UsersPage = () => {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {users && users.map((user, index) => (
-                            <TableRow key={index}>
+                        {users && users.map((user) => (
+                            <TableRow key={user._id}>
+                                <TableCell>
+                                    <Button variant={"ghost"} onClick={() => deleteUser(user._id)}><Trash2/></Button>
+                                    <Dialog open={openUpdate} onOpenChange={setOpenUpdate}>
+                                        <DialogTrigger asChild>
+                                            <Button onClick={() => setOpenUpdate(true)} variant={"ghost"}><Pen/></Button>
+                                        </DialogTrigger>
+                                        <DialogContent>
+                                            <DialogHeader>
+                                                <DialogTitle>Modification de l'utilisateur</DialogTitle>
+                                            </DialogHeader>
+                                            <AddUserForm
+                                                defaultValues={user}
+                                                status={"update"}
+                                                idEmployee={user._id}
+                                                fetchData={fetchData}
+                                                closeDialog={() => setOpenUpdate(false)}
+                                            />
+                                        </DialogContent>
+                                    </Dialog>
+
+                                </TableCell>
                                 <TableCell className={"text-left"}>{user["lastname"]}</TableCell>
                                 <TableCell className={"text-left"}>{user["firstname"]}</TableCell>
                                 <TableCell className={"text-left"}>{user["email"]}</TableCell>
@@ -91,6 +132,7 @@ const UsersPage = () => {
                     </TableBody>
                 </Table>
             </div>
+            <Toaster/>
         </div>
     )
 }
