@@ -1,7 +1,9 @@
 import React, {createContext, useState, Dispatch} from "react";
+import {User} from "./type.ts";
 
 export type InitialStateType = {
     pole: string,
+    user?: User
 }
 
 const AppContext = createContext<{

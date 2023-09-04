@@ -17,16 +17,25 @@ type Props = {
     onChange?: (e : React.ChangeEvent<HTMLInputElement>) => void
     type?: string
     typeInput?: string
+    orientation?: string
+    value?: string
 }
 const InputCustom = (props : Props) => {
    const getPattern = () => {
         if (props.typeInput !== undefined) {
             switch (props.typeInput) {
                 case "email" :
-                    return { value :
-                    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                        message : "Email incorrect"
-            }
+                    return {
+                        value:
+                            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                        message: "Email incorrect."
+                    }
+                case "password" :
+                    return {
+                        value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+                        message: "Votre mot de passe doit comporter au minimum 8 caractères avec une majuscule, une minuscule, un chiffre et un caractère spécial."
+                    }
+
                 default:
                     break
             }
@@ -34,7 +43,7 @@ const InputCustom = (props : Props) => {
     }
 
     return (
-        <>
+        <div className={props.orientation === "horizontal" ? "flex" : "flex-col"}>
             <Label htmlFor={props.id} className={props.error ? "text-destructive" : ""}>{props.label}</Label>
             <Input
                 id={props.id}
@@ -44,11 +53,12 @@ const InputCustom = (props : Props) => {
                     onChange: props.onChange
                 })}
                 type={props.type}
+                value={props.value}
             />
             <span className={"text-destructive"}>
                 {props.error ? (props.error.type === "pattern" ? props.patternMessage  : "Champ obligatoire") : ""}
             </span>
-        </>
+        </div>
     )
 }
 

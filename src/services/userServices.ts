@@ -112,11 +112,43 @@ const changePassword = async (id: string, password: string) => {
     }
 }
 
+const updateUserById = async (user: User, id: string) => {
+    try {
+        const response = await fetch(url + id, {
+            method: "PUT",
+            headers: {
+                "Accept" : "application/json",
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify(user)
+        })
+        return await response.json()
+    } catch (err) {
+        console.log(err)
+    }
+}
+const deleteUserById = async (id: string) => {
+    try {
+        const response = await fetch(url + id, {
+            method: "DELETE",
+            headers: {
+                "Accept" : "application/json",
+                "Content-Type" : "application/json"
+            }
+        })
+        return await response.json()
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 export const userServices = {
     getUsers,
     getUsersByPole,
     getUsersById,
     addUser,
     changePassword,
-    login
+    login,
+    updateUserById,
+    deleteUserById
 }
