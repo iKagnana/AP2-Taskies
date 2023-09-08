@@ -96,15 +96,15 @@ const login = async (login: Login) => {
     }
 }
 
-const changePassword = async (id: string, password: string) => {
+const changePassword = async (password: string, email: string ) => {
     try {
-        const response = await fetch(url + "password/" + id, {
+        const response = await fetch(url + "password/", {
             method: "POST",
             headers: {
                 "Accept" : "application/json",
                 "Content-Type" : "application/json"
             },
-            body: JSON.stringify({password: password})
+            body: JSON.stringify({password: password, email: email})
         })
         return await response.json()
     } catch (err) {
