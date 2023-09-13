@@ -1,9 +1,9 @@
-import {useContext} from "react";
 import {useNavigate} from "react-router-dom";
-import {AppContext} from "../../utils/context.tsx";
 import GestionCard from "../../components/ui/card/GestionCard.tsx";
 import Header from "../../components/header/Header.tsx";
-
+//service
+import {getUser} from "../../utils/userGetter.ts";
+//icon
 import {
     User,
     Boxes,
@@ -14,14 +14,14 @@ import {
 } from "lucide-react";
 
 const HomePageAdmin = () => {
-    const {state} = useContext(AppContext)
+    const user = getUser()
     const navigate = useNavigate()
     return (
         <div id={"container"} className={"flex flex-col items-center h-screen"}>
             <Header/>
             <div id={"page-container"} className={"flex w-full h-full"}>
                 <div className={"p-24 w-2/5 bg-[#91ADCA]"}>
-                    <span className={"text-3xl"}>Bienvenu(e) dans votre espace personnel {state.user?.firstname} !</span>
+                    <span className={"text-3xl"}>Bienvenu(e) dans votre espace personnel {user?.firstname} !</span>
                 </div>
                 <div id={"right-side"} className={"flex flex-col items-center w-3/5 p-2"}>
                     <span className={"text-2xl"}>Gestion</span>

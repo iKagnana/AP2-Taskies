@@ -3,9 +3,12 @@ import './App.css'
 
 //components
 import Login from "./views/Login.tsx";
+import {ProtectedRoute} from "./components/router/ProtectedRoute.tsx";
 ////admin
 import HomePageAdmin from "./views/Admin/HomePageAdmin.tsx";
 import UsersPage from "./views/Admin/UsersPage.tsx";
+////user
+import HomePageUser from "./views/User/HomePageUser.tsx";
 
 
 function App() {
@@ -19,8 +22,11 @@ function App() {
                   <Route path="/connexion" element={<Login/>}/>
               </Route>
               <Route path={"/admin"}>
-                  <Route index element={<HomePageAdmin/>}/>
-                  <Route path={"/admin/utilisateurs"} element={<UsersPage/>}/>
+                  <Route index element={<ProtectedRoute><HomePageAdmin/></ProtectedRoute>}/>
+                  <Route path={"/admin/utilisateurs"} element={<ProtectedRoute><UsersPage/></ProtectedRoute>}/>
+              </Route>
+              <Route path={"/user"}>
+                  <Route index element={<ProtectedRoute><HomePageUser/></ProtectedRoute>}/>
               </Route>
           </Routes>
       </Router>
