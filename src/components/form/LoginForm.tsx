@@ -1,5 +1,3 @@
-import {useContext} from "react";
-import {AppContext} from "../../utils/context.tsx";
 import {useForm, FieldValues} from "react-hook-form";
 import {useNavigate} from "react-router-dom";
 //ui
@@ -7,9 +5,9 @@ import InputCustom from "../ui/inputForm/InputCustom.tsx";
 import {Button} from "../../@/components/ui/button.tsx";
 //services
 import {userServices} from "../../services/userServices.ts";
+import {setUser} from "../../utils/userGetter.ts";
 
 const LoginForm = () => {
-    const {dispatch} = useContext(AppContext)
     const navigate = useNavigate()
     const {register, formState: {errors: {email, password}}, handleSubmit} = useForm()
 
@@ -20,8 +18,9 @@ const LoginForm = () => {
             .then((user) => {
                 if (user !== undefined) {
                     localStorage.setItem("token", user.token)
-                    localStorage.setItem("user", user.user)
-                    dispatch({pole : user.pole === "all" ? "Administrateur" : user.user.pole})
+                    setUser(user)
+                    localStorage.setItem("pole", user.pole === "all" ? "Administrateur" : user.user.pole)
+                    //dispatch({pole : user.pole === "all" ? "Administrateur" : user.user.pole})
                     navigate("/")
                 }
 

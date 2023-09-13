@@ -1,6 +1,3 @@
-import {useContext} from "react";
-import {AppContext} from "../../utils/context.tsx";
-
 //shadcn-ui
 import {Button} from "../../@/components/ui/button.tsx";
 import {
@@ -21,16 +18,20 @@ import {
     UserSquare,
 } from "lucide-react";
 
+//service
+import {getUser} from "../../utils/userGetter.ts";
+
+
 const Header = () => {
-    const {state} = useContext(AppContext)
-    console.log(state)
+    const pole = localStorage.getItem("pole")
+    const user = getUser()
     return (
         <div id={"container"} className={"w-full h-44 flex justify-around items-center text-lg bg-[#f1f5f9]"}>
-            <span>GSB - Taskies</span>
+            <span>{user.lastname + " " + user.firstname} | GSB - Taskies </span>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant={"ghost"}>
-                        <span className={"text-lg"}>{state.pole !== ""? state.pole : "Test test"}</span>
+                        <span className={"text-lg"}>{pole}</span>
                         <ChevronDown className={"ml-2 h-4 w-4"}/>
                     </Button>
                 </DropdownMenuTrigger>
