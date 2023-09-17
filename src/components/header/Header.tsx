@@ -1,3 +1,6 @@
+//react-router-dom
+import {useNavigate} from "react-router-dom";
+
 //shadcn-ui
 import {Button} from "../../@/components/ui/button.tsx";
 import {
@@ -14,17 +17,22 @@ import {
     KeyRound,
     LogOut,
     ChevronDown,
-    StickyNote,
     UserSquare,
 } from "lucide-react";
 
 //service
-import {getUser} from "../../utils/userGetter.ts";
+import {getUser, logout} from "../../utils/userGetter.ts";
 
 
 const Header = () => {
     const user = getUser()
-    console.log(user)
+    const navigate = useNavigate()
+
+    const logoutRedirection = () => {
+        logout()
+        navigate("/connexion")
+    }
+
     return (
         <div id={"container"} className={"w-full h-44 flex justify-around items-center text-lg bg-[#f1f5f9]"}>
             <span>{user.lastname + " " + user.firstname} | GSB - Taskies </span>
@@ -44,20 +52,18 @@ const Header = () => {
                         <Boxes className={"mr-2 h-4 w-4"}/>
                         <span className={"text-lg"}>Pôles</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <KeyRound className={"mr-2 h-4 w-4"}/>
-                        <span className={"text-lg"}>Autorisations</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <StickyNote className={"mr-2 h-4 w-4"}/>
-                        <span className={"text-lg"}>Mes notes perso</span>
-                    </DropdownMenuItem>
+                    {user.role === 0 ? (
+                        <DropdownMenuItem>
+                            <KeyRound className={"mr-2 h-4 w-4"}/>
+                            <span className={"text-lg"}>Autorisations</span>
+                        </DropdownMenuItem>
+                    ) : null}
                     <DropdownMenuItem>
                         <UserSquare className={"mr-2 h-4 w-4"}/>
                         <span className={"text-lg"}>Mon compte</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator/>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => logoutRedirection()}>
                         <LogOut className={"mr-2 h-4 w-4"}/>
                         <span className={"text-lg"}>Déconnexion</span>
                     </DropdownMenuItem>

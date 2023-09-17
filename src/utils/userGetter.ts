@@ -13,3 +13,8 @@ export const getUser = () => {
     }
 
 }
+
+export const logout = () => {
+    localStorage.removeItem("user")
+    localStorage.removeItem("token")
+}
