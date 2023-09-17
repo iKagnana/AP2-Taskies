@@ -14,7 +14,7 @@ type Task = {
 //#region GET
 const getTasksByPole  = async (pole: string) => {
     try {
-        const response = await fetch(url + pole, {
+        const response = await fetch(url+ "pole/" + pole, {
             method: "GET",
             headers: {
                 "Accept" : "application/json",
@@ -29,7 +29,7 @@ const getTasksByPole  = async (pole: string) => {
 
 const getTasksByAssignee = async (assignee: string) => {
     try {
-        const response = await fetch(url + assignee, {
+        const response = await fetch(url + "assignee/" + assignee, {
             method: "GET",
             headers: {
                 "Accept" : "application/json",

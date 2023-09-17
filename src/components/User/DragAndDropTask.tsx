@@ -18,20 +18,21 @@ import {
 import {XCircle, CircleDashed, CheckCircle} from "lucide-react";
 //service
 import {tasksService} from "../../services/taskServices.ts";
+import {getUser} from "../../utils/userGetter.ts";
 //type
 import {Task} from "../../utils/type.ts";
 
 const DragAndDropTask = () => {
     const [openAdd, setOpenAdd] = useState<boolean>(false)
     const [tasks, setTasks] = useState<Task[]>([])
-    const user = localStorage.getItem("user")
+    const user = getUser()
     useEffect(() => {
         fetchData()
-        console.log(localStorage.getItem("user"))
     }, [])
 
     const fetchData = async () => {
-        const response = await tasksService.getTasksByAssignee("Task TEST")
+        const response = await tasksService.getTasksByAssignee(user.firstname + " " + user.lastname)
+        console.log(response)
         setTasks(response)
     }
 
@@ -40,13 +41,13 @@ const DragAndDropTask = () => {
             <div className={"flex justify-end"}>
                 <Dialog open={openAdd} onOpenChange={setOpenAdd}>
                     <DialogTrigger asChild>
-                        <Button onClick={() => setOpenAdd(true)} >Création d'utilisateur</Button>
+                        <Button onClick={() => setOpenAdd(true)} >Création d'une tâche</Button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
                             <DialogTitle>Création d'une nouvelle tâche</DialogTitle>
                         </DialogHeader>
-                        <TaskForm status={"add"}/>
+                        <TaskForm status={"add"} user={user} index={tasks.length} closeDialog={() => setOpenAdd(false)} fetchData={fetchData} />
                     </DialogContent>
                 </Dialog>
             </div>
@@ -66,7 +67,7 @@ const DragAndDropTask = () => {
                                     {...provided.droppableProps}
                                 >
                                     {tasks.map((data) => (
-                                        <ItemDnd task={data}/>
+                                        <ItemDnd task={data} fetchData={fetchData}/>
                                     ))}
                                 </div>
                             )}

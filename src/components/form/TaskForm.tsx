@@ -16,10 +16,16 @@ import {userServices} from "../../services/userServices.ts";
 //type
 import {User} from "../../utils/type.ts";
 import {poles} from "../../utils/data.ts";
+import {tasksService} from "../../services/taskServices.ts";
 
 type Props = {
     defaultValues? : Form
     status? : string
+    user?: User
+    index: number
+    closeDialog : () => void
+    fetchData: () => void
+    id?: string
 }
 
 type Form = {
@@ -35,6 +41,7 @@ type Form = {
 const TaskForm = (props: Props) => {
     const [users, setUsers] = useState<User[]>([])
     const [openCombo, setOpenCombo] = useState<boolean>(false)
+    const [disabledField, setDisabledField] = useState<string[]>([])
     const {toast} = useToast()
     const {register, formState: {errors: { assignee, pole, title}}, handleSubmit, setValue, watch} = useForm()
 
@@ -42,6 +49,29 @@ const TaskForm = (props: Props) => {
         fetchData()
         if (props.status  === "add") {
             setValue("status", "À faire")
+            // pole de l'utilisateur pour création de tâches
+            // on ne compte pas le rôle administrateur ni directeur
+            switch (props.user?.role) {
+                case 2 :
+                    setValue("pole", props.user.pole)
+                    setDisabledField(["pole"])
+                    break
+                case 3 :
+                    setValue("assignee", props.user.firstname + " " + props.user.lastname)
+                    setValue("pole", props.user.pole)
+                    setDisabledField(["assignee", "pole"])
+            }
+        } else {
+            if (props.defaultValues) {
+                const values = props.defaultValues
+                setValue("assignee", values.assignee)
+                setValue("pole", values.pole)
+                setValue("title", values.title)
+                setValue("status", values.status)
+                setValue("desc", values.desc)
+                setValue("comment", values.comment)
+            }
+
         }
     }, [])
 
@@ -51,7 +81,34 @@ const TaskForm = (props: Props) => {
     }
 
     const onSubmit = (values: FieldValues) => {
-        console.log(values)
+        if (props.status === "add") {
+            const newTask = {
+                index: props.index,
+                assignee: values.assignee,
+                pole: values.pole,
+                title: values.title,
+                desc: values.desc,
+                status: "À faire",
+                comment: values.comment,
+            }
+
+            tasksService.addTasks(newTask)
+            toast({title: "Ajout", description : "Ajout de la tâche réussie"})
+        } else if (props.status === "update" && props.id) {
+            const newTask = {
+                index: props.index,
+                assignee: values.assignee,
+                pole: values.pole,
+                title: values.title,
+                desc: values.desc,
+                status: values.status,
+                comment: values.comment,
+            }
+
+            tasksService.updateTaskById(props.id, newTask)
+            toast({title: "Modification", description : "Modification de la tâche réussie"})
+        }
+
     }
 
     const handleErrors = (err : FieldValues) => {
@@ -65,6 +122,7 @@ const TaskForm = (props: Props) => {
             <form onSubmit={handleSubmit(onSubmit, handleErrors)} className={"flex flex-col gap-2"}>
                 <div className={"flex pb-1"}>
                     <Combobox
+                        disabled={disabledField.includes("assignee")}
                         value={watch("assignee")}
                         open={openCombo}
                         setOpen={(open) => setOpenCombo(open)}
@@ -94,6 +152,7 @@ const TaskForm = (props: Props) => {
                     />
 
                     <SelectCustom
+                        disabled={disabledField.includes("pole")}
                         label={"Pole"}
                         id={"pole"}
                         register={register}

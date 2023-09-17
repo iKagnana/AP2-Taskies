@@ -4,6 +4,7 @@ type Pole = {
 }
 
 type Task = {
+    _id?: string;
     index: number;
     title: string;
     status: string;

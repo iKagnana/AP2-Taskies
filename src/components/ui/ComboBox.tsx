@@ -1,4 +1,3 @@
-import {useState} from "react"
 import {UseFormRegister, FieldError, FieldValues, FieldErrorsImpl, Merge} from "react-hook-form";
 
 //ican
@@ -31,6 +30,7 @@ type Props = {
     open: boolean
     setOpen: (open: boolean) => void
     required: boolean
+    disabled?: boolean
 }
 const Combobox = (props: Props) => {
 
@@ -44,6 +44,7 @@ const Combobox = (props: Props) => {
                         role="combobox"
                         aria-expanded={props.open}
                         className="w-[200px] justify-between"
+                        disabled={props.disabled}
                     >
                         {props.value || props.placeholder}
                         <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />

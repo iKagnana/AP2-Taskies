@@ -19,6 +19,7 @@ type Props = {
     typeInput?: string
     orientation?: string
     value?: string
+    disabled?: boolean
 }
 const InputCustom = (props : Props) => {
    const getPattern = () => {
@@ -46,6 +47,7 @@ const InputCustom = (props : Props) => {
         <div className={props.orientation === "horizontal" ? "flex" : "flex-col"}>
             <Label htmlFor={props.id} className={props.error ? "text-destructive" : ""}>{props.label}</Label>
             <Input
+                disabled={props.disabled}
                 id={props.id}
                 {...props.register(props.name, {
                     required: props.required,

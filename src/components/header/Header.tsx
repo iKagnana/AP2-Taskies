@@ -23,15 +23,15 @@ import {getUser} from "../../utils/userGetter.ts";
 
 
 const Header = () => {
-    const pole = localStorage.getItem("pole")
     const user = getUser()
+    console.log(user)
     return (
         <div id={"container"} className={"w-full h-44 flex justify-around items-center text-lg bg-[#f1f5f9]"}>
             <span>{user.lastname + " " + user.firstname} | GSB - Taskies </span>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant={"ghost"}>
-                        <span className={"text-lg"}>{pole}</span>
+                        <span className={"text-lg"}>{user.pole}</span>
                         <ChevronDown className={"ml-2 h-4 w-4"}/>
                     </Button>
                 </DropdownMenuTrigger>
