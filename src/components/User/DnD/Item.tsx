@@ -10,14 +10,14 @@ import {
     DialogTitle,
     DialogTrigger
 } from "../../../@/components/ui/dialog.tsx";
+import {Textarea} from "../../../@/components/ui/textarea.tsx";
 
 //icon
-import { Pen } from 'lucide-react';
+import { Pen, Eye } from 'lucide-react';
 
 import {Task} from "../../../utils/type.ts";
 import {Button} from "../../../@/components/ui/button.tsx";
 import TaskForm from "../../form/TaskForm.tsx";
-import {set} from "react-hook-form";
 
 //service
 import {tasksService} from "../../../services/taskServices.ts";
@@ -41,7 +41,7 @@ const ItemDnd = (props: Props) => {
     }
 
     return (
-        <div>
+        <>
             <Draggable draggableId={props.task?.title} index={props.task?.index}>
                 {(provided) => (
                     <div
@@ -49,12 +49,21 @@ const ItemDnd = (props: Props) => {
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
                     >
-                        <Dialog open={open} onOpenChange={setOpen}>
-                            <DialogTrigger>
-                                <div id={"dnd-item"} className={""}>
-                                    <span>{props.task?.title}</span>
+                        <div className={"p-3"}>
+                            <div id={"dnd-item"} className={"border rounded w-full flex justify-between p-3 items-center bg-white"}>
+                                <div className={"flex flex-col items-start"}>
+                                    <span className={"text-xl"}>{props.task?.title}</span>
+                                    <span className={"italic text-gray-500 text-ellipsis overflow-hidden h-[20px]"}>{props.task?.desc}</span>
                                 </div>
-                            </DialogTrigger>
+
+                                    <Button
+                                        onClick={() => setOpen(true)}
+                                    >
+                                        <Eye className={"w-4 h-4"}/>
+                                    </Button>
+                            </div>
+                        </div>
+                        <Dialog open={open} onOpenChange={setOpen}>
                             <DialogContent>
                                 <DialogHeader className={"flex flex-row items-center justify-between p-3"}>
                                     <span id={"dialog-header-title"} className={"font-bold text-xl"}>{props.task?.title} - {props.task?.pole}</span>
@@ -66,15 +75,15 @@ const ItemDnd = (props: Props) => {
                                             <DialogContent>
                                                 <DialogHeader>
                                                     <DialogTitle>Modification d'une nouvelle tâche</DialogTitle>
-                                                    <TaskForm
-                                                        id={props.task._id}
-                                                        index={props.task.index}
-                                                        defaultValues={props.task}
-                                                        closeDialog={() => setOpenForm(false)}
-                                                        fetchData={props.fetchData}
-                                                        status={"update"}
-                                                    />
                                                 </DialogHeader>
+                                                <TaskForm
+                                                    id={props.task._id}
+                                                    index={props.task.index}
+                                                    defaultValues={props.task}
+                                                    closeDialog={() => setOpen(false)}
+                                                    fetchData={props.fetchData}
+                                                    status={"update"}
+                                                />
                                             </DialogContent>
                                         </Dialog>
                                     </div>
@@ -82,9 +91,9 @@ const ItemDnd = (props: Props) => {
                                 <div className={"flex flex-col gap-2"}>
                                     <span>Assigné à : {props.task?.assignee}</span>
                                     <span>Description</span>
-                                    <div className={"h-28 w-full border"}>
+                                    <Textarea className={"h-28 w-full border"}>
                                         {props.task?.desc}
-                                    </div>
+                                    </Textarea>
                                     <span>Fichiers concernés : </span>
                                     <div className={"h-28 w-full border"}>
                                         <ul>
@@ -94,9 +103,9 @@ const ItemDnd = (props: Props) => {
                                         </ul>
                                     </div>
                                     <span>Commentaire</span>
-                                    <div className={"h-28 w-full border"}>
+                                    <Textarea className={"h-28 w-full border"}>
                                         {props.task?.comment}
-                                    </div>
+                                    </Textarea>
 
                                     <Button variant={"ghost"} className={"text-destructive"} onClick={() => deleteTask()}>Supprimer la tâche</Button>
                                 </div>
@@ -105,7 +114,7 @@ const ItemDnd = (props: Props) => {
                     </div>
                 )}
             </Draggable>
-        </div>
+        </>
     )
 }
 

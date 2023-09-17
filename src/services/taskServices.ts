@@ -76,6 +76,22 @@ const updateTaskById = async (id: string, task: Task) => {
     }
 }
 
+const changeStatusTaskById = async (id: string, index: number, status: string) => {
+    try {
+        const response = await fetch(url + "/status/" + id, {
+            method: "PUT",
+            headers: {
+                "Accept" : "application/json",
+                "Content-Type" : "application/json"
+            },
+            body : JSON.stringify({index: index, status: status})
+        })
+        return await response.json()
+    } catch(err) {
+        console.log(err)
+    }
+}
+
 //#region DELETE
 const deleteTaskById = async (id: string) => {
     try {
@@ -96,5 +112,6 @@ export const tasksService = {
     getTasksByPole,
     addTasks,
     updateTaskById,
+    changeStatusTaskById,
     deleteTaskById
 }
