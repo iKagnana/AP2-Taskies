@@ -3,7 +3,7 @@ import {useState, useEffect} from "react";
 //component
 import TaskForm from "../form/TaskForm.tsx";
 //ui
-import {DragDropContext, DropResult, ResponderProvided} from "react-beautiful-dnd"
+import {DragDropContext, DropResult} from "react-beautiful-dnd"
 import {StrictModeDroppable} from "./DnD/StrictModeDroppable.tsx";
 import ItemDnd from "./DnD/Item.tsx";
 import {Button} from "../../@/components/ui/button.tsx";
@@ -31,7 +31,19 @@ const DragAndDropTask = () => {
     }, [])
 
     const fetchData = async () => {
-        const response = await tasksService.getTasksByAssignee(user.firstname + " " + user.lastname)
+        let response
+        switch (user.role) {
+            case 0:
+            case 1:
+                response = await tasksService.getTasksByPole("")
+                break
+            case 2:
+                response = await tasksService.getTasksByPole(user.pole)
+                break
+            case 3:
+                response = await tasksService.getTasksByAssignee(user.firstname + " " + user.lastname)
+
+        }
         console.log(response)
         setTasks(response)
     }
@@ -81,7 +93,7 @@ const DragAndDropTask = () => {
                                 <div
                                     ref={provided.innerRef}
                                     {...provided.droppableProps}
-                                    style={{ backgroundColor: snapshot.isDraggingOver ? 'skyblue' : null }}
+                                    style={{ backgroundColor: snapshot.isDraggingOver ? 'skyblue' : undefined }}
                                     className={"border border-black w-[450px] h-[590px]"}
                                 >
                                     {tasks.map((data) => {
@@ -105,7 +117,7 @@ const DragAndDropTask = () => {
                                 <div
                                     ref={provided.innerRef}
                                     {...provided.droppableProps}
-                                    style={{ backgroundColor: snapshot.isDraggingOver ? 'skyblue' : null }}
+                                    style={{ backgroundColor: snapshot.isDraggingOver ? 'skyblue' : undefined }}
                                     className={"border border-black w-[450px] h-[590px]"}
                                 >
                                     {tasks.map((data) => {
@@ -129,7 +141,7 @@ const DragAndDropTask = () => {
                                 <div
                                     ref={provided.innerRef}
                                     {...provided.droppableProps}
-                                    style={{ backgroundColor: snapshot.isDraggingOver ? "skyblue"  : null }}
+                                    style={{ backgroundColor: snapshot.isDraggingOver ? "skyblue"  : undefined }}
                                     className={"border border-black w-[450px] h-[590px]"}
                                 >
                                     {tasks.map((data) => {

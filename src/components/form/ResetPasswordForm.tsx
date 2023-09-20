@@ -1,3 +1,4 @@
+import {useState} from "react";
 import {useForm, FieldValues} from "react-hook-form";
 //ui
 import {useToast} from "../../@/components/ui/use-toast.ts";
@@ -11,14 +12,17 @@ type Props = {
 }
 
 const ResetPasswordForm = (props: Props) => {
+    const [inputError, setInputError] = useState("")
     const {register, formState: {errors: {password, passwordCheck}}, handleSubmit} = useForm()
     const {toast} = useToast()
 
 
     const onSubmit = async (values : FieldValues) => {
         if (values.password !== values.passwordCheck) {
+            setInputError("Les deux mots de passe sont différents.")
             toast({title: "Erreur mot de passe", description : "Les deux mots de passe sont différents."})
         } else {
+            setInputError("")
             await userServices.changePassword(values.password, props.email)
         }
     }
@@ -49,6 +53,7 @@ const ResetPasswordForm = (props: Props) => {
                 label={"Validation nouveau mot de passe"}
                 />
 
+                <span className={"text-destructive"}>{inputError}</span>
                 <Button>Valider</Button>
             </form>
         </div>

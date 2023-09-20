@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useParams, Navigate} from "react-router-dom";
+import {useParams, Navigate, useNavigate} from "react-router-dom";
 //component
 import ResetPasswordForm from "../components/form/ResetPasswordForm.tsx";
 //ui
@@ -10,20 +10,33 @@ import {
     CardDescription,
     CardContent
 } from "../@/components/ui/card.tsx";
+//service
+import {codeEmailService} from "../services/codeEmail.ts";
 
 const ResetPasswordPage = () => {
     const [valide, setValide] = useState(true)
     const [email, setEmail] = useState("")
-    const encodedEmail = useParams()
+    const params = useParams()
+    const navigate = useNavigate()
 
     useEffect(() => {
-        if (encodedEmail) {
-            const email = decodeURI(encodedEmail.toString())
-            setEmail(email)
-        } else {
-            setValide(false)
-        }
+        console.log(params)
+        valideCode()
     }, [])
+
+    const valideCode = async () => {
+        if (params.code == undefined) {
+            navigate("/*")
+        } else {
+            const response = await codeEmailService.getCodeEmailByCode(params.code.slice(3))
+            setValide(response.active)
+            setEmail(response.user)
+            setTimeout(() => {
+                console.log("oui")
+                codeEmailService.desactivadeCode(response._id)
+            }, 5000)
+        }
+    }
 
     return (
         <div id="page-container" className={"flex h-screen"}>

@@ -9,7 +9,7 @@ import SelectCustom from "../ui/inputForm/SelectCustom.tsx";
 import {SelectItem} from "../../@/components/ui/select.tsx";
 import Combobox from "../ui/ComboBox.tsx";
 import {CommandItem} from "../../@/components/ui/command.tsx";
-import {Check} from "lucide-react";
+import {Check, Trash2} from "lucide-react";
 import {cn} from "../../@/lib/utils.ts";
 import TextareaCustom from "../ui/inputForm/TextareaCustom.tsx";
 //service
@@ -212,7 +212,10 @@ const TaskForm = (props: Props) => {
                         <Label className={"text-gray-500"}>Listes de fichiers</Label>
                     ) : null}
                     {files.map((file) => (
-                        <li>{file}</li>
+                        <li className={"flex justify-between"}>
+                            {file}
+                            <Trash2/>
+                        </li>
                     ))}
                 </div>
 

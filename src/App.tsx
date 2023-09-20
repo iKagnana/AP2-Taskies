@@ -28,6 +28,9 @@ function App() {
                   <Route index element={<ProtectedRoute><HomePageAdmin/></ProtectedRoute>}/>
                   <Route path={"/admin/utilisateurs"} element={<ProtectedRoute><UsersPage/></ProtectedRoute>}/>
               </Route>
+              <Route path={"/user"}>
+                  <Route index element={<ProtectedRoute><HomePageUser/></ProtectedRoute>}/>
+              </Route>
           </Routes>
       </Router>
     </>
