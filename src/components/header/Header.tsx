@@ -45,18 +45,20 @@ const Header = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
                     <DropdownMenuItem>
-                        <User className={"mr-2 h-4 w-4"}/>
-                        <span className={"text-lg"}>Utilisateurs</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
                         <Boxes className={"mr-2 h-4 w-4"}/>
                         <span className={"text-lg"}>Pôles</span>
                     </DropdownMenuItem>
                     {user.role === 0 ? (
-                        <DropdownMenuItem>
-                            <KeyRound className={"mr-2 h-4 w-4"}/>
-                            <span className={"text-lg"}>Autorisations</span>
-                        </DropdownMenuItem>
+                        <>
+                            <DropdownMenuItem onClick={() => navigate("/admin/utilisateurs")}>
+                                <User className={"mr-2 h-4 w-4"}/>
+                                <span className={"text-lg"}>Utilisateurs</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <KeyRound className={"mr-2 h-4 w-4"}/>
+                                <span className={"text-lg"}>Autorisations</span>
+                            </DropdownMenuItem>
+                        </>
                     ) : null}
                     <DropdownMenuItem>
                         <UserSquare className={"mr-2 h-4 w-4"}/>

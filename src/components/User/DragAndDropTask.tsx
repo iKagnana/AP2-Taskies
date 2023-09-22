@@ -14,18 +14,24 @@ import {
     DialogHeader,
     DialogContent
 } from "../../@/components/ui/dialog.tsx";
+import {Popover, PopoverContent, PopoverTrigger} from "../../@/components/ui/popover.tsx";
 //icon
-import {XCircle, CircleDashed, CheckCircle} from "lucide-react";
+import {XCircle, CircleDashed, CheckCircle, RefreshCw, Filter, Check} from "lucide-react";
 //service
 import {tasksService} from "../../services/taskServices.ts";
 import {getUser} from "../../utils/userGetter.ts";
 //type
 import {Task} from "../../utils/type.ts";
+import {cn} from "../../@/lib/utils.ts";
 
 const DragAndDropTask = () => {
     const [openAdd, setOpenAdd] = useState<boolean>(false)
     const [tasks, setTasks] = useState<Task[]>([])
+    const [filters, setFilters] = useState<string[]>([])
+    const [filter, setFilter] = useState<string>("")
+    const [filteredTasks, setFilteredTasks] = useState<Task[]>([])
     const user = getUser()
+
     useEffect(() => {
         fetchData()
     }, [])
@@ -35,9 +41,11 @@ const DragAndDropTask = () => {
         switch (user.role) {
             case 0:
             case 1:
-                response = await tasksService.getTasksByPole("")
+                setFilters(["Tous", "Pôle"])
+                response = await tasksService.getTasks()
                 break
             case 2:
+                setFilters(["Pôle", "Mes tâches"])
                 response = await tasksService.getTasksByPole(user.pole)
                 break
             case 3:
@@ -46,6 +54,7 @@ const DragAndDropTask = () => {
         }
         console.log(response)
         setTasks(response)
+        setFilteredTasks(response)
     }
 
     const onDragEnd = (result: DropResult) => {
@@ -64,18 +73,55 @@ const DragAndDropTask = () => {
 
     }
 
+    const filterTask = (selectedFilter: string) => {
+        setFilter(selectedFilter)
+
+        let filtered: Task[] = []
+        switch (selectedFilter) {
+            case "Tous":
+                filtered =  tasks
+                break
+            case "Pôle" :
+                filtered =  tasks.filter((task) => task.pole === "user.pole")
+                break
+            case "Mes tâches" :
+                filtered =  tasks.filter((task) => task.assignee === user.firstname + " " + user.lastname)
+                break
+
+        }
+        setFilteredTasks(filtered)
+    }
+
     return (
         <div id={"page-container"}>
-            <div className={"flex justify-end"}>
+            <div className={"flex justify-end gap-2"}>
+                <Popover>
+                    <PopoverTrigger asChild>
+                        <Button><Filter color="#ffffff"/></Button>
+                    </PopoverTrigger>
+                    <PopoverContent className={"w-full"}>
+                        {filters.map((opt) => (
+                            <div onClick={() => filterTask(opt)} className={"flex items-center"}>
+                                <Check className={cn(
+                                    "mr-2 h-4 w-4 ",
+                                    filter === opt ? "opacity-100" : "opacity-0"
+                                )}/>
+                                <span>{opt}</span>
+                            </div>
+                        ))}
+                    </PopoverContent>
+                </Popover>
+                <Button onClick={() => fetchData()}><RefreshCw color="#ffffff"/></Button>
                 <Dialog open={openAdd} onOpenChange={setOpenAdd}>
                     <DialogTrigger asChild>
-                        <Button onClick={() => setOpenAdd(true)} >Création d'une tâche</Button>
+                        <Button onClick={() => setOpenAdd(true)}>Création d'une tâche</Button>
                     </DialogTrigger>
                     <DialogContent>
                         <DialogHeader>
                             <DialogTitle>Création d'une nouvelle tâche</DialogTitle>
                         </DialogHeader>
-                        <TaskForm status={"add"} index={tasks.length} closeDialog={() => setOpenAdd(false)} fetchData={fetchData} />
+                        <TaskForm status={"add"} index={tasks.length} closeDialog={() => setOpenAdd(false)}
+                                  fetchData={fetchData}/>
                     </DialogContent>
                 </Dialog>
             </div>
@@ -93,12 +139,12 @@ const DragAndDropTask = () => {
                                 <div
                                     ref={provided.innerRef}
                                     {...provided.droppableProps}
-                                    style={{ backgroundColor: snapshot.isDraggingOver ? 'skyblue' : undefined }}
+                                    style={{backgroundColor: snapshot.isDraggingOver ? 'skyblue' : undefined}}
                                     className={"border border-black w-[450px] h-[590px]"}
                                 >
-                                    {tasks.map((data) => {
+                                    {filteredTasks.map((data) => {
                                         if (data.status === "todo") {
-                                           return <ItemDnd task={data} fetchData={fetchData}/>
+                                            return <ItemDnd task={data} fetchData={fetchData}/>
                                         }
                                     })}
                                     {provided.placeholder}
@@ -117,10 +163,10 @@ const DragAndDropTask = () => {
                                 <div
                                     ref={provided.innerRef}
                                     {...provided.droppableProps}
-                                    style={{ backgroundColor: snapshot.isDraggingOver ? 'skyblue' : undefined }}
+                                    style={{backgroundColor: snapshot.isDraggingOver ? 'skyblue' : undefined}}
                                     className={"border border-black w-[450px] h-[590px]"}
                                 >
-                                    {tasks.map((data) => {
+                                    {filteredTasks.map((data) => {
                                         if (data.status === "inProgress") {
                                             return <ItemDnd task={data} fetchData={fetchData}/>
                                         }
@@ -141,10 +187,10 @@ const DragAndDropTask = () => {
                                 <div
                                     ref={provided.innerRef}
                                     {...provided.droppableProps}
-                                    style={{ backgroundColor: snapshot.isDraggingOver ? "skyblue"  : undefined }}
+                                    style={{backgroundColor: snapshot.isDraggingOver ? "skyblue" : undefined}}
                                     className={"border border-black w-[450px] h-[590px]"}
                                 >
-                                    {tasks.map((data) => {
+                                    {filteredTasks.map((data) => {
                                         if (data.status === "completed") {
                                             return <ItemDnd task={data} fetchData={fetchData}/>
                                         }

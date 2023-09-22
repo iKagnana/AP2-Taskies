@@ -12,6 +12,21 @@ type Task = {
 }
 
 //#region GET
+const getTasks  = async () => {
+    try {
+        const response = await fetch(url, {
+            method: "GET",
+            headers: {
+                "Accept" : "application/json",
+                "Content-Type" : "application/json"
+            }
+        })
+        return await response.json()
+    } catch(err) {
+        console.log(err)
+    }
+}
+
 const getTasksByPole  = async (pole: string) => {
     try {
         const response = await fetch(url+ "pole/" + pole, {
@@ -108,6 +123,7 @@ const deleteTaskById = async (id: string) => {
     }
 }
 export const tasksService = {
+    getTasks,
     getTasksByAssignee,
     getTasksByPole,
     addTasks,

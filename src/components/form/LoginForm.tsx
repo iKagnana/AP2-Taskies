@@ -40,7 +40,7 @@ const LoginForm = () => {
                     toast({title : "Connexion réussie", description : "Bienvenu dans votre espace"})
                     localStorage.setItem("token", user.token)
                     setUser(user.user)
-                    if (user.pole === "Administration") {
+                    if (user.user.role === 0) {
                         navigate("/admin")
                     } else {
                         navigate("/user")
@@ -91,11 +91,11 @@ const LoginForm = () => {
                         <DialogDescription>
                             Nous vous enverrons un lien par email pour réinitialiser votre mot de passe.
                         </DialogDescription>
-
-                        <Input value={emailForgot} onChange={(e) => setEmailForgot(e.target.value)}/>
-
-                        <Button type="button" onClick={() => sendEmail()}>Envoyer</Button>
                     </DialogHeader>
+
+                    <Input value={emailForgot} onChange={(e) => setEmailForgot(e.target.value)}/>
+
+                    <Button type="button" onClick={() => sendEmail()}>Envoyer</Button>
                 </DialogContent>
             </Dialog>
         </form>

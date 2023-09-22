@@ -53,6 +53,7 @@ const ItemDnd = (props: Props) => {
                             <div id={"dnd-item"} className={"border rounded w-full flex justify-between p-3 items-center bg-white"}>
                                 <div className={"flex flex-col items-start"}>
                                     <span className={"text-xl"}>{props.task?.title}</span>
+                                    <span className={"text-blue-500"}>{props.task.pole} - {props.task.assignee}</span>
                                     <span className={"italic text-gray-500 text-ellipsis overflow-hidden h-[20px]"}>{props.task?.desc}</span>
                                 </div>
 

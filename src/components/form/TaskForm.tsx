@@ -104,6 +104,12 @@ const TaskForm = (props: Props) => {
         setAddedFile("")
     }
 
+    const removeFile = (index: number) => {
+        const newFiles = files
+        newFiles.splice(index, 1)
+        setFiles(newFiles)
+    }
+
     const onSubmit = (values: FieldValues) => {
         if (props.status === "add") {
             const newTask = {
@@ -155,23 +161,43 @@ const TaskForm = (props: Props) => {
                         value={watch("assignee")}
                         open={openCombo}
                         setOpen={(open) => setOpenCombo(open)}
-                        render={users.map((user, index) => (
+                        className={cn(
+                            "mr-2 h-4 w-4 ",
+                            watch("assignee") === "Non assignée" ? "opacity-100" : "opacity-0"
+                        )}   render={users.map((user, index) => (
                             <CommandItem
                                 key={index}
-                                onSelect={(currentValue) => {
-                                    setValue("assignee", currentValue)
-
+                                onSelect={() => {
+                                    setValue("assignee", user.firstname + " " + user.lastname)
+                                    setValue("pole", user.pole)
+                                    setDisabledField(["pole"])
+                                    setOpenCombo(false)
                                 }}
                             >
                                 <Check
                                     className={cn(
-                                        "mr-2 h-4 w-4",
+                                        "mr-2 h-4 w-4 ",
                                         watch("assignee") === user.firstname + " " + user.lastname ? "opacity-100" : "opacity-0"
                                     )}
                                 />
-                                {user.firstname.charAt(0).toUpperCase() + user.firstname.slice(1) + " " + user.lastname.toUpperCase()}
+                                {user.firstname + " " +  user.lastname}
                             </CommandItem>
-                            ))}
+                        ))}
+                        renderDefault={
+                            <CommandItem
+                                key={"none"}
+                                onSelect={() => {
+                                    setValue("assignee", "Non assignée")
+                                    setDisabledField([])
+                                    setOpenCombo(false)
+                                }}
+                            >
+                                <Check
+
+                                />
+                                Non assignée
+                            </CommandItem>
+                        }
                         placeholder={"Employé(e)"}
                         register={register}
                         label={"Assigner à *"}
@@ -211,10 +237,10 @@ const TaskForm = (props: Props) => {
                     {files.length !== 0 ? (
                         <Label className={"text-gray-500"}>Listes de fichiers</Label>
                     ) : null}
-                    {files.map((file) => (
+                    {files.map((file, index) => (
                         <li className={"flex justify-between"}>
                             {file}
-                            <Trash2/>
+                            <Trash2 onClick={() => removeFile(index)}/>
                         </li>
                     ))}
                 </div>

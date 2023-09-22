@@ -1,7 +1,7 @@
 import {UseFormRegister, FieldError, FieldValues, FieldErrorsImpl, Merge} from "react-hook-form";
 
 //ican
-import { ChevronsUpDown } from "lucide-react"
+import {ChevronsUpDown} from "lucide-react"
 
 //ui
 import {Label} from "../../@/components/ui/label.tsx";
@@ -21,6 +21,7 @@ import {Button} from "../../@/components/ui/button.tsx";
 type Props = {
     value : string
     render: JSX.Element[]
+    renderDefault?: JSX.Element
     placeholder: string
     error?: FieldError | Merge<FieldError, FieldErrorsImpl>
     register: UseFormRegister<FieldValues>
@@ -52,10 +53,11 @@ const Combobox = (props: Props) => {
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0">
                     <Command>
-                        <CommandInput placeholder="Search framework..." />
-                        <CommandEmpty>No framework found.</CommandEmpty>
+                        <CommandInput placeholder="Employé(e)..." />
+                        <CommandEmpty>Aucun(e) employé(e) trouvé</CommandEmpty>
                         <CommandGroup>
                             {props.render}
+                            {props.renderDefault}
                         </CommandGroup>
                     </Command>
                 </PopoverContent>
