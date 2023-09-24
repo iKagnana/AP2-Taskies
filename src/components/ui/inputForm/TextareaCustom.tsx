@@ -1,8 +1,6 @@
-import {Input} from "../../../@/components/ui/input.js";
-import {Label} from "../../../@/components/ui/label.js";
+import {Label} from "../../../@/components/ui/label.tsx";
+import {Textarea} from "../../../@/components/ui/textarea.tsx";
 import {UseFormRegister, FieldError, FieldValues, FieldErrorsImpl, Merge} from "react-hook-form";
-
-
 
 type Props = {
     register : UseFormRegister<FieldValues>
@@ -21,40 +19,17 @@ type Props = {
     value?: string
     disabled?: boolean
 }
-const InputCustom = (props : Props) => {
-   const getPattern = () => {
-        if (props.typeInput !== undefined) {
-            switch (props.typeInput) {
-                case "email" :
-                    return {
-                        value:
-                            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-                        message: "Email incorrect."
-                    }
-                case "password" :
-                    return {
-                        value: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-                        message: "Votre mot de passe doit comporter au minimum 8 caractères avec une majuscule, une minuscule, un chiffre et un caractère spécial."
-                    }
-
-                default:
-                    break
-            }
-        }
-    }
-
+const TextareaCustom = (props : Props) => {
     return (
         <div className={props.orientation === "horizontal" ? "flex" : "flex-col"}>
             <Label htmlFor={props.id} className={props.error ? "text-destructive" : ""}>{props.label}</Label>
-            <Input
+            <Textarea
                 disabled={props.disabled}
                 id={props.id}
                 {...props.register(props.name, {
                     required: props.required,
-                    pattern: props.typeInput ? getPattern() : props.pattern,
                     onChange: props.onChange
                 })}
-                type={props.type}
                 value={props.value}
             />
             <span className={"text-destructive"}>
@@ -64,4 +39,4 @@ const InputCustom = (props : Props) => {
     )
 }
 
-export default InputCustom
+export default TextareaCustom

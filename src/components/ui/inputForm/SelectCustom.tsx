@@ -13,6 +13,7 @@ type Props = {
     render: JSX.Element[]
     label: string
     value?: string
+    disabled?: boolean
 }
 
 const SelectCustom = (props: Props) => {
@@ -25,6 +26,7 @@ const SelectCustom = (props: Props) => {
                 })}
                 onValueChange={props.onChange}
                 value={props.value}
+                disabled={props.disabled}
             >
                 <SelectTrigger>
                     <SelectValue placeholder={""}/>

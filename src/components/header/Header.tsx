@@ -1,5 +1,5 @@
-import {useContext} from "react";
-import {AppContext} from "../../utils/context.tsx";
+//react-router-dom
+import {useNavigate} from "react-router-dom";
 
 //shadcn-ui
 import {Button} from "../../@/components/ui/button.tsx";
@@ -14,49 +14,58 @@ import {
 import {
     User,
     Boxes,
-    KeyRound,
     LogOut,
     ChevronDown,
-    StickyNote,
     UserSquare,
+    ClipboardList
 } from "lucide-react";
 
+//service
+import {getUser, logout} from "../../utils/userGetter.ts";
+
+
 const Header = () => {
-    const {state} = useContext(AppContext)
-    console.log(state)
+    const user = getUser()
+    const navigate = useNavigate()
+
+    const logoutRedirection = () => {
+        logout()
+        navigate("/connexion")
+    }
+
     return (
         <div id={"container"} className={"w-full h-44 flex justify-around items-center text-lg bg-[#f1f5f9]"}>
-            <span>GSB - Taskies</span>
+            <span>{user.lastname + " " + user.firstname} | GSB - Taskies </span>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant={"ghost"}>
-                        <span className={"text-lg"}>{state.pole !== ""? state.pole : "Test test"}</span>
+                        <span className={"text-lg"}>{user.pole}</span>
                         <ChevronDown className={"ml-2 h-4 w-4"}/>
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                    <DropdownMenuItem>
-                        <User className={"mr-2 h-4 w-4"}/>
-                        <span className={"text-lg"}>Utilisateurs</span>
+                    <DropdownMenuItem onClick={() => navigate("/user")}>
+                        <ClipboardList className={"mr-2 h-4 w-4"}/>
+                        <span className={"text-lg"}>Mes tâches</span>
                     </DropdownMenuItem>
                     <DropdownMenuItem>
                         <Boxes className={"mr-2 h-4 w-4"}/>
                         <span className={"text-lg"}>Pôles</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <KeyRound className={"mr-2 h-4 w-4"}/>
-                        <span className={"text-lg"}>Autorisations</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                        <StickyNote className={"mr-2 h-4 w-4"}/>
-                        <span className={"text-lg"}>Mes notes perso</span>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    {user.role === 0 ? (
+                        <>
+                            <DropdownMenuItem onClick={() => navigate("/admin/utilisateurs")}>
+                                <User className={"mr-2 h-4 w-4"}/>
+                                <span className={"text-lg"}>Utilisateurs</span>
+                            </DropdownMenuItem>
+                        </>
+                    ) : null}
+                    <DropdownMenuItem onClick={() => navigate("/mon-compte")}>
                         <UserSquare className={"mr-2 h-4 w-4"}/>
                         <span className={"text-lg"}>Mon compte</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator/>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => logoutRedirection()}>
                         <LogOut className={"mr-2 h-4 w-4"}/>
                         <span className={"text-lg"}>Déconnexion</span>
                     </DropdownMenuItem>

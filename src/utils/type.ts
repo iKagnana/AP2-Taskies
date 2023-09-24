@@ -4,13 +4,15 @@ type Pole = {
 }
 
 type Task = {
+    _id?: string;
+    index: number;
     title: string;
-    status: number;
+    status: string;
     assignee: string;
     desc?: string;
-    files? : [];
+    files? : string[];
     comment?: string;
-    pole: string
+    pole: string;
 }
 
 type User = {

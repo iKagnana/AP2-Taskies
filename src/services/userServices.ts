@@ -96,15 +96,31 @@ const login = async (login: Login) => {
     }
 }
 
-const changePassword = async (id: string, password: string) => {
+const getCodeEmail = async (email: string ) => {
     try {
-        const response = await fetch(url + "password/" + id, {
+        const response = await fetch(url + "/reset/password", {
             method: "POST",
             headers: {
                 "Accept" : "application/json",
                 "Content-Type" : "application/json"
             },
-            body: JSON.stringify({password: password})
+            body: JSON.stringify({email: email})
+        })
+        return await response.json()
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+const changePassword = async (password: string, email: string ) => {
+    try {
+        const response = await fetch(url + "password/", {
+            method: "POST",
+            headers: {
+                "Accept" : "application/json",
+                "Content-Type" : "application/json"
+            },
+            body: JSON.stringify({password: password, email: email})
         })
         return await response.json()
     } catch (err) {
@@ -147,6 +163,7 @@ export const userServices = {
     getUsersByPole,
     getUsersById,
     addUser,
+    getCodeEmail,
     changePassword,
     login,
     updateUserById,
