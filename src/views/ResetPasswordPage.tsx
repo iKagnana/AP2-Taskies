@@ -12,6 +12,7 @@ import {
 } from "../@/components/ui/card.tsx";
 //service
 import {codeEmailService} from "../services/codeEmail.ts";
+import {getUser} from "../utils/userGetter.ts";
 
 const ResetPasswordPage = () => {
     const [valide, setValide] = useState(true)
@@ -27,7 +28,17 @@ const ResetPasswordPage = () => {
     const valideCode = async () => {
         if (params.code == undefined) {
             navigate("/*")
-        } else {
+        } else if (params.code == "token") {
+            console.log("beep")
+            const token = localStorage.getItem("token")
+            if (token !== undefined) {
+                const user = getUser()
+                setEmail(user.email)
+                setValide(true)
+            } else {
+                navigate("/*")
+            }
+        } else{
             const response = await codeEmailService.getCodeEmailByCode(params.code.slice(3))
             setValide(response.active)
             setEmail(response.user)

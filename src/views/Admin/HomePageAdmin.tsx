@@ -7,10 +7,8 @@ import {getUser} from "../../utils/userGetter.ts";
 import {
     User,
     Boxes,
-    KeyRound,
-    StickyNote,
     UserSquare,
-    Beaker
+    ClipboardList
 } from "lucide-react";
 
 const HomePageAdmin = () => {
@@ -29,12 +27,10 @@ const HomePageAdmin = () => {
                         <div className={"flex justify-center"}>
                             <GestionCard onClick={() => navigate("/admin/utilisateurs")} title={"Utilisateurs"} icon={User}/>
                             <GestionCard onClick={() => navigate("/admin/utilsateurs")} title={"Pôles"} icon={Boxes}/>
-                            <GestionCard onClick={() => navigate("/admin/utilsateurs")} title={"Autorisations"} icon={KeyRound}/>
                         </div>
                         <div className={"flex justify-center"}>
-                            <GestionCard onClick={() => navigate("/admin/utilsateurs")} title={"Mes notes personnelles"} icon={StickyNote}/>
-                            <GestionCard onClick={() => navigate("/admin/utilsateurs")} title={"Mon compte"} icon={UserSquare}/>
-                            <GestionCard onClick={() => navigate("/admin/utilsateurs")} title={"À propos de GSB"} icon={Beaker}/>
+                            <GestionCard onClick={() => navigate("/mon-compte")} title={"Mon compte"} icon={UserSquare}/>
+                            <GestionCard onClick={() => navigate("/user")} title={"Mes tâches"} icon={ClipboardList}/>
                         </div>
 
 

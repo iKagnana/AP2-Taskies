@@ -9,7 +9,7 @@ export const ProtectedRoute = ({children})  => {
     if (!user) {
         return <Navigate to={"/connexion"}/>
     } else {
-        if (user.role === 0 && !location.pathname.includes("/admin")) {
+        if (user.role !== 0 && location.pathname.includes("/admin")) {
             return <Navigate to={"/connexion"}/>
         }
 

@@ -193,7 +193,10 @@ const TaskForm = (props: Props) => {
                                 }}
                             >
                                 <Check
-
+                                    className={cn(
+                                        "mr-2 h-4 w-4 ",
+                                        watch("assignee") === "Non assignée" ? "opacity-100" : "opacity-0"
+                                    )}
                                 />
                                 Non assignée
                             </CommandItem>

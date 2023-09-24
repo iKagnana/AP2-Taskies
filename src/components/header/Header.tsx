@@ -14,10 +14,10 @@ import {
 import {
     User,
     Boxes,
-    KeyRound,
     LogOut,
     ChevronDown,
     UserSquare,
+    ClipboardList
 } from "lucide-react";
 
 //service
@@ -44,6 +44,10 @@ const Header = () => {
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
+                    <DropdownMenuItem onClick={() => navigate("/user")}>
+                        <ClipboardList className={"mr-2 h-4 w-4"}/>
+                        <span className={"text-lg"}>Mes tâches</span>
+                    </DropdownMenuItem>
                     <DropdownMenuItem>
                         <Boxes className={"mr-2 h-4 w-4"}/>
                         <span className={"text-lg"}>Pôles</span>
@@ -54,13 +58,9 @@ const Header = () => {
                                 <User className={"mr-2 h-4 w-4"}/>
                                 <span className={"text-lg"}>Utilisateurs</span>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <KeyRound className={"mr-2 h-4 w-4"}/>
-                                <span className={"text-lg"}>Autorisations</span>
-                            </DropdownMenuItem>
                         </>
                     ) : null}
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate("/mon-compte")}>
                         <UserSquare className={"mr-2 h-4 w-4"}/>
                         <span className={"text-lg"}>Mon compte</span>
                     </DropdownMenuItem>

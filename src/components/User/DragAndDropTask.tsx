@@ -82,7 +82,7 @@ const DragAndDropTask = () => {
                 filtered =  tasks
                 break
             case "Pôle" :
-                filtered =  tasks.filter((task) => task.pole === "user.pole")
+                filtered =  tasks.filter((task) => task.pole === user.pole)
                 break
             case "Mes tâches" :
                 filtered =  tasks.filter((task) => task.assignee === user.firstname + " " + user.lastname)

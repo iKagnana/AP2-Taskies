@@ -1,3 +1,4 @@
+import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import {useForm, FieldValues} from "react-hook-form";
 //ui
@@ -15,6 +16,7 @@ const ResetPasswordForm = (props: Props) => {
     const [inputError, setInputError] = useState("")
     const {register, formState: {errors: {password, passwordCheck}}, handleSubmit} = useForm()
     const {toast} = useToast()
+    const navigate = useNavigate()
 
 
     const onSubmit = async (values : FieldValues) => {
@@ -24,6 +26,7 @@ const ResetPasswordForm = (props: Props) => {
         } else {
             setInputError("")
             await userServices.changePassword(values.password, props.email)
+            navigate(-1)
         }
     }
 
@@ -31,7 +34,7 @@ const ResetPasswordForm = (props: Props) => {
         console.log(err)
     }
     return (
-        <div id={"form-container flex h-screen"}>
+        <div id={"form-container"}>
             <form onSubmit={handleSubmit(onSubmit, handleErrors)} className={"flex flex-col items-center gap-y-2"}>
                 <InputCustom
                     id={"password"}
@@ -46,7 +49,7 @@ const ResetPasswordForm = (props: Props) => {
                 <InputCustom
                 id={"passwordCheck"}
                 name={"passwordCheck"}
-                type={"passwordCheck"}
+                type={"password"}
                 register={register}
                 error={passwordCheck}
                 required={true}
