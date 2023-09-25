@@ -1,5 +1,3 @@
-import {Params} from "react-router-dom";
-
 const url = "http://localhost:8080/codeEmail/"
 
 //#region GET
