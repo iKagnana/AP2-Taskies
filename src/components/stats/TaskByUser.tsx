@@ -1,6 +1,7 @@
 import {useState, useEffect} from "react";
 //chart
 import {Doughnut} from "react-chartjs-2";
+import type {ChartData} from "chart.js";
 import {Chart as ChartJS, ArcElement, Tooltip, Legend} from "chart.js";
 //service
 import {tasksService} from "../../services/taskServices.ts";
@@ -13,7 +14,7 @@ type Props = {
 
 const TaskByUser = (props: Props) => {
     const [labels] = useState<string[]>(["À faire", "En cours", "Terminée"])
-    const [data, setData] = useState({labels: labels, datasets: []})
+    const [data, setData] = useState<ChartData<'doughnut'>>({labels: labels, datasets: []})
 
     useEffect(() => {
         fetchData()

@@ -161,10 +161,7 @@ const TaskForm = (props: Props) => {
                         value={watch("assignee")}
                         open={openCombo}
                         setOpen={(open) => setOpenCombo(open)}
-                        className={cn(
-                            "mr-2 h-4 w-4 ",
-                            watch("assignee") === "Non assignée" ? "opacity-100" : "opacity-0"
-                        )}   render={users.map((user, index) => (
+                        render={users.map((user, index) => (
                             <CommandItem
                                 key={index}
                                 onSelect={() => {
