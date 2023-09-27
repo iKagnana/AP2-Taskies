@@ -26,6 +26,7 @@ import {useToast} from "../../@/components/ui/use-toast.ts";
 import {Trash2, Pen, RefreshCw} from "lucide-react";
 //services
 import {userServices} from "../../services/userServices.ts";
+import {getUser} from "../../utils/userGetter.ts";
 //type
 import {User} from "../../utils/type.ts";
 const UsersPage = () => {
@@ -33,6 +34,7 @@ const UsersPage = () => {
     const [openUpdate, setOpenUpdate] = useState<boolean>(false)
     const [users, setUsers] = useState<[User]>()
     const { toast } = useToast()
+    const user = getUser()
 
     useEffect(() => {
         fetchData()
@@ -57,7 +59,7 @@ const UsersPage = () => {
 
     const deleteUser = (id?: string) => {
         if (id) {
-            userServices.deleteUserById(id)
+            userServices.deleteUserById(id, user._id)
             toast({
                 title: "Suppression",
                 description : "L'utilisateur a bien été supprimé."

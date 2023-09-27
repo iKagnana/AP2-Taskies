@@ -8,6 +8,7 @@ import SelectCustom from "../ui/inputForm/SelectCustom.tsx";
 import {SelectItem} from "../../@/components/ui/select.tsx";
 //services
 import {userServices} from "../../services/userServices.ts";
+import {getUser} from "../../utils/userGetter.ts";
 //data
 import {poles} from "../../utils/data.ts";
 //icon
@@ -33,6 +34,7 @@ const AddUserForm = (props: Props) => {
     const alphabet = "abcdefghijklmnopqrstuvwxyz"
     const charSpe = "@&!./"
     const { toast } = useToast()
+    const user = getUser()
     const [requiredFields] = useState(props.status === "update" ? false : true)
     const {register, formState: {errors: {lastname, firstname, email, password}}, handleSubmit, setValue, watch} = useForm()
 
@@ -77,7 +79,7 @@ const AddUserForm = (props: Props) => {
                 pole: values.pole,
                 role: parseInt(values.role)
             }
-            userServices.updateUserById(updatedUser, props.idEmployee)
+            userServices.updateUserById(updatedUser, props.idEmployee, user._id)
             toast({title : "Modification", description : "Modification des informations de l'utilisateur réussi."})
         } else {
             const newUser = {
@@ -88,7 +90,7 @@ const AddUserForm = (props: Props) => {
                 pole: values.pole,
                 role: parseInt(values.role)
             }
-            userServices.addUser(newUser)
+            userServices.addUser(newUser, user._id)
             toast({title: "Ajout", description: "Ajout de l'utilisateur réussi."})
         }
         props.closeDialog()

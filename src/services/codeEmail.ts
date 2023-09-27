@@ -1,4 +1,4 @@
-const url = "http://localhost:8080/codeEmail/"
+const url = "http://51.195.44.176:8081/codeEmail/"
 
 //#region GET
 const getCodeEmailByCode = async (code: string) => {
