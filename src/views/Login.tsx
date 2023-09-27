@@ -1,4 +1,6 @@
 import LoginForm from "../components/form/LoginForm.tsx";
+import {Toaster} from "../@/components/ui/toaster.tsx";
+
 
 const Login = () => {
     return (
@@ -16,6 +18,7 @@ const Login = () => {
                     <LoginForm />
                 </div>
             </div>
+            <Toaster/>
         </>
     )
 }

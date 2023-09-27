@@ -22,6 +22,7 @@ const LoginForm = () => {
     const [emailForgot, setEmailForgot] = useState("")
     const navigate = useNavigate()
     const {register, formState: {errors: {email, password}}, handleSubmit} = useForm()
+    const [error, setError] = useState<boolean>(false)
     const {toast} = useToast()
 
     const sendEmail = () => {
@@ -37,7 +38,7 @@ const LoginForm = () => {
         userServices.login({email: email, password: password})
             .then((user) => {
                 if (user !== undefined) {
-                    toast({title : "Connexion réussie", description : "Bienvenu dans votre espace"})
+                    setError(false)
                     localStorage.setItem("token", user.token)
                     setUser(user.user)
                     if (user.user.role === 0) {
@@ -45,6 +46,9 @@ const LoginForm = () => {
                     } else {
                         navigate("/user")
                     }
+                } else {
+                    toast({title : "Mauvais mot de passe", description: "Veuillez réessayer."})
+                    setError(true)
                 }
 
             })
@@ -56,6 +60,10 @@ const LoginForm = () => {
     return (
     <div id="form-container">
         <form onSubmit={handleSubmit(onSubmit, handleErrors)} className={"flex flex-col items-center gap-y-2"}>
+
+            {error ?
+                <span className={"text-destructive"}>Informations invalides</span>
+                : null}
 
             <InputCustom
                 id={"email"}

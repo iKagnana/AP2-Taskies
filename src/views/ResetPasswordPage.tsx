@@ -10,6 +10,7 @@ import {
     CardDescription,
     CardContent
 } from "../@/components/ui/card.tsx";
+import {Toaster} from "../@/components/ui/toaster.tsx";
 //service
 import {codeEmailService} from "../services/codeEmail.ts";
 import {getUser} from "../utils/userGetter.ts";
@@ -70,7 +71,7 @@ const ResetPasswordPage = () => {
             ) :
                 <Navigate to={"/"}/>
             }
-
+            <Toaster/>
         </div>
     )
 }

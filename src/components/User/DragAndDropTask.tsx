@@ -14,6 +14,7 @@ import {
     DialogHeader,
     DialogContent
 } from "../../@/components/ui/dialog.tsx";
+import {Toaster} from "../../@/components/ui/toaster.tsx";
 import {Popover, PopoverContent, PopoverTrigger} from "../../@/components/ui/popover.tsx";
 //icon
 import {XCircle, CircleDashed, CheckCircle, RefreshCw, Filter, Check} from "lucide-react";
@@ -139,7 +140,7 @@ const DragAndDropTask = () => {
                                 <div
                                     ref={provided.innerRef}
                                     {...provided.droppableProps}
-                                    style={{backgroundColor: snapshot.isDraggingOver ? 'skyblue' : undefined}}
+                                    style={{backgroundColor: snapshot.isDraggingOver ? 'skyblue' : undefined, maxHeight: 590, overflowY: "auto"}}
                                     className={"border border-black w-[450px] h-[590px]"}
                                 >
                                     {filteredTasks.map((data) => {
@@ -163,7 +164,7 @@ const DragAndDropTask = () => {
                                 <div
                                     ref={provided.innerRef}
                                     {...provided.droppableProps}
-                                    style={{backgroundColor: snapshot.isDraggingOver ? 'skyblue' : undefined}}
+                                    style={{backgroundColor: snapshot.isDraggingOver ? 'skyblue' : undefined,  maxHeight: 590, overflowY: "auto"}}
                                     className={"border border-black w-[450px] h-[590px]"}
                                 >
                                     {filteredTasks.map((data) => {
@@ -187,7 +188,7 @@ const DragAndDropTask = () => {
                                 <div
                                     ref={provided.innerRef}
                                     {...provided.droppableProps}
-                                    style={{backgroundColor: snapshot.isDraggingOver ? "skyblue" : undefined}}
+                                    style={{backgroundColor: snapshot.isDraggingOver ? "skyblue" : undefined,  maxHeight: 590, overflowY: "auto"}}
                                     className={"border border-black w-[450px] h-[590px]"}
                                 >
                                     {filteredTasks.map((data) => {
@@ -202,6 +203,7 @@ const DragAndDropTask = () => {
                     </div>
                 </div>
             </DragDropContext>
+            <Toaster/>
         </div>
     )
 }
