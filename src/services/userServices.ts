@@ -1,5 +1,5 @@
 //const url = "http://localhost:8080/users/"
-const url = "http://51.195.44.176:8081/users/"
+const url = "https://test.klemens-galus.fr/users/"
 
 //#region Type
 type User = {

@@ -1,4 +1,4 @@
-const url = "http://51.195.44.176:8081/tasks/"
+const url = "https://test.klemens-galus.fr/tasks/"
 //const url = "http://localhost:8080/tasks/"
 
 //#region Type

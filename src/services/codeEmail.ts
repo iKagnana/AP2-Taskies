@@ -1,4 +1,4 @@
-const url = "http://51.195.44.176:8081/codeEmail/"
+const url = "https://test.klemens-galus.fr/codeEmail/"
 
 //#region GET
 const getCodeEmailByCode = async (code: string) => {
