@@ -1,5 +1,5 @@
 # AP2-Taskies
-React app for school project
+React app for school project.
 The main goal is to create an app that helps people organize their tasks.
 
 ## Deployement 
