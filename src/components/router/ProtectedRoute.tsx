@@ -7,8 +7,6 @@ type Props = {
 export const ProtectedRoute = ({children}: Props)  => {
     const user = getUser()
     const location = useLocation()
-    console.log(user)
-    console.log(location)
     if (!user) {
         return <Navigate to={"/connexion"}/>
     } else {

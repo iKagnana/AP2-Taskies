@@ -7,6 +7,7 @@ import {ProtectedRoute} from "./components/router/ProtectedRoute.tsx";
 import ResetPasswordPage from "./views/ResetPasswordPage.tsx";
 import ErrorPage from "./views/ErrorPage.tsx";
 import MyAccount from "./views/MyAccount.tsx";
+import InConstruction from "./views/InConstruction.tsx"
 ////admin
 import HomePageAdmin from "./views/Admin/HomePageAdmin.tsx";
 import UsersPage from "./views/Admin/UsersPage.tsx";
@@ -25,6 +26,7 @@ function App() {
                   <Route path="/connexion" element={<Login/>}/>
                   <Route path="/reset-password/:code" element={<ResetPasswordPage/>}/>
                   <Route path={"/mon-compte"} element={<MyAccount/>}/>
+                  <Route path={"/working"} element={<InConstruction/>}/>
               </Route>
               <Route path={"/admin"}>
                   <Route index element={<ProtectedRoute><HomePageAdmin/></ProtectedRoute>}/>

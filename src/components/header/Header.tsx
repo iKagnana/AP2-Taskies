@@ -48,7 +48,7 @@ const Header = () => {
                         <ClipboardList className={"mr-2 h-4 w-4"}/>
                         <span className={"text-lg"}>Mes tâches</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate("/working")}>
                         <Boxes className={"mr-2 h-4 w-4"}/>
                         <span className={"text-lg"}>Pôles</span>
                     </DropdownMenuItem>
