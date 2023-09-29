@@ -92,7 +92,7 @@ const ItemDnd = (props: Props) => {
                                 <div className={"flex flex-col gap-2"}>
                                     <span>Assigné à : {props.task?.assignee}</span>
                                     <span>Description</span>
-                                    <Textarea className={"h-28 w-full border"}>
+                                    <Textarea className={"h-28 w-full border"} disabled={true}>
                                         {props.task?.desc}
                                     </Textarea>
                                     <span>Fichiers concernés : </span>
@@ -104,7 +104,7 @@ const ItemDnd = (props: Props) => {
                                         </ul>
                                     </div>
                                     <span>Commentaire</span>
-                                    <Textarea className={"h-28 w-full border"}>
+                                    <Textarea className={"h-28 w-full border"} disabled={true}>
                                         {props.task?.comment}
                                     </Textarea>
 

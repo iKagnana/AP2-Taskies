@@ -42,18 +42,19 @@ const DragAndDropTask = () => {
         switch (user.role) {
             case 0:
             case 1:
-                setFilters(["Tous", "Pôle"])
+                setFilters(["Tous", "Pôle", "Mes tâches"])
+                setFilter("Tous")
                 response = await tasksService.getTasks()
                 break
             case 2:
                 setFilters(["Pôle", "Mes tâches"])
+                setFilter("Pôle")
                 response = await tasksService.getTasksByPole(user.pole)
                 break
             case 3:
                 response = await tasksService.getTasksByAssignee(user.firstname + " " + user.lastname)
 
         }
-        console.log(response)
         setTasks(response)
         setFilteredTasks(response)
     }
@@ -96,22 +97,25 @@ const DragAndDropTask = () => {
     return (
         <div id={"page-container"}>
             <div className={"flex justify-end gap-2"}>
-                <Popover>
-                    <PopoverTrigger asChild>
-                        <Button><Filter color="#ffffff"/></Button>
-                    </PopoverTrigger>
-                    <PopoverContent className={"w-full"}>
-                        {filters.map((opt) => (
-                            <div onClick={() => filterTask(opt)} className={"flex items-center"}>
-                                <Check className={cn(
-                                    "mr-2 h-4 w-4 ",
-                                    filter === opt ? "opacity-100" : "opacity-0"
-                                )}/>
-                                <span>{opt}</span>
-                            </div>
-                        ))}
-                    </PopoverContent>
-                </Popover>
+                {user.role !== 3 ? (
+                    <Popover>
+                        <PopoverTrigger asChild>
+                            <Button><Filter color="#ffffff"/></Button>
+                        </PopoverTrigger>
+                        <PopoverContent className={"w-full"}>
+                            {filters.map((opt) => (
+                                <div onClick={() => filterTask(opt)} className={"flex items-center"}>
+                                    <Check className={cn(
+                                        "mr-2 h-4 w-4 ",
+                                        filter === opt ? "opacity-100" : "opacity-0"
+                                    )}/>
+                                    <span>{opt}</span>
+                                </div>
+                            ))}
+                        </PopoverContent>
+                    </Popover>
+                ) : null}
+
                 <Button onClick={() => fetchData()}><RefreshCw color="#ffffff"/></Button>
                 <Dialog open={openAdd} onOpenChange={setOpenAdd}>
                     <DialogTrigger asChild>
